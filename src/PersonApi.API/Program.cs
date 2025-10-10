@@ -92,11 +92,13 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 
 // Log application startup
-app.Logger.LogInformation("Person API started successfully");
-app.Logger.LogInformation("Environment: {Environment}", app.Environment.EnvironmentName);
-app.Logger.LogInformation("Swagger UI available at: {BaseUrl}", app.Environment.IsDevelopment() ? "http://localhost:5000" : "N/A");
+app.Logger.LogInformation("Person API started successfully - Environment: {Environment}", app.Environment.EnvironmentName);
+if (app.Environment.IsDevelopment())
+{
+    app.Logger.LogInformation("Swagger UI available at: http://localhost:5000");
+}
 
-app.Run();
+await app.RunAsync();
 
 // Make the implicit Program class public for testing
-public partial class Program { }
+public static partial class Program { }

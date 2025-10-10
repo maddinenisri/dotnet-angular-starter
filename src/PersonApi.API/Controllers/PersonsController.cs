@@ -154,7 +154,8 @@ public class PersonsController : ControllerBase
     /// <returns>List of matching persons</returns>
     [HttpGet("search")]
     [ProducesResponseType(typeof(IEnumerable<PersonDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Search([FromQuery] string name)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Search([FromQuery] string? name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
