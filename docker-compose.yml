@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # SQL Server Database - using Azure SQL Edge for ARM64 (M-series Mac) compatibility
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: persondb-sql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Password123
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+      - ./docker/sql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/1433' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # .NET 9 API
+  api:
+    build:
+      context: .
+      dockerfile: src/PersonApi.API/Dockerfile
+    container_name: personapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=db;Database=PersonDb;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;MultipleActiveResultSets=true
+    ports:
+      - "5001:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Angular 20 Frontend (Nginx + Production Build)
+  web:
+    build:
+      context: ./web/person-app
+      dockerfile: Dockerfile
+    container_name: person-web
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+volumes:
+  sqldata:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,130 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>{{ isEditMode ? 'Edit Person' : 'Create New Person' }}</h3>
+        </div>
+        <div class="card-body">
+          <!-- Error Alert -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+          </div>
+
+          <!-- Loading Spinner -->
+          <div *ngIf="loading" class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form *ngIf="!loading" [formGroup]="personForm" (ngSubmit)="onSubmit()">
+            <!-- Name Field -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                [class.is-invalid]="name?.invalid && name?.touched"
+              />
+              <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+                <div *ngIf="name?.errors?.['required']">Name is required.</div>
+                <div *ngIf="name?.errors?.['maxlength']">Name cannot exceed 200 characters.</div>
+              </div>
+            </div>
+
+            <!-- Age Field -->
+            <div class="mb-3">
+              <label for="age" class="form-label">Age <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                id="age"
+                formControlName="age"
+                [class.is-invalid]="age?.invalid && age?.touched"
+              />
+              <div *ngIf="age?.invalid && age?.touched" class="invalid-feedback">
+                <div *ngIf="age?.errors?.['required']">Age is required.</div>
+                <div *ngIf="age?.errors?.['min'] || age?.errors?.['max']">
+                  Age must be between 0 and 150.
+                </div>
+              </div>
+            </div>
+
+            <!-- Date of Birth Field -->
+            <div class="mb-3">
+              <label for="dateOfBirth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+              <input
+                type="date"
+                class="form-control"
+                id="dateOfBirth"
+                formControlName="dateOfBirth"
+                [class.is-invalid]="dateOfBirth?.invalid && dateOfBirth?.touched"
+              />
+              <div *ngIf="dateOfBirth?.invalid && dateOfBirth?.touched" class="invalid-feedback">
+                <div *ngIf="dateOfBirth?.errors?.['required']">Date of birth is required.</div>
+              </div>
+            </div>
+
+            <!-- Skills Field -->
+            <div class="mb-3">
+              <label class="form-label">Skills</label>
+              <div class="input-group mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Add a skill..."
+                  [(ngModel)]="newSkill"
+                  [ngModelOptions]="{standalone: true}"
+                  (keyup.enter)="addSkill()"
+                />
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  (click)="addSkill()"
+                  [disabled]="!newSkill.trim()"
+                >
+                  <i class="bi bi-plus"></i> Add
+                </button>
+              </div>
+
+              <!-- Skills List -->
+              <div *ngIf="skills.length > 0" class="mt-2">
+                <div *ngFor="let skill of skills.controls; let i = index" class="d-flex align-items-center mb-2">
+                  <span class="badge bg-info text-dark me-2 flex-grow-1">
+                    {{ skill.value }}
+                  </span>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="removeSkill(i)"
+                    title="Remove skill"
+                  >
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
+              <small class="form-text text-muted">
+                Add skills one at a time. Press Enter or click Add button.
+              </small>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary" (click)="cancel()">
+                <i class="bi bi-x-circle"></i> Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="personForm.invalid || loading">
+                <i class="bi bi-save"></i> {{ isEditMode ? 'Update' : 'Create' }} Person
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

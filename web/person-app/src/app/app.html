@@ -1,0 +1,40 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">
+      <i class="bi bi-people-fill"></i> {{ title }}
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/persons" routerLinkActive="active">
+            <i class="bi bi-list"></i> All Persons
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/persons/new" routerLinkActive="active">
+            <i class="bi bi-plus-circle"></i> Add Person
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<router-outlet></router-outlet>
+
+<!-- Footer -->
+<footer class="bg-light text-center text-lg-start mt-5">
+  <div class="text-center p-3 bg-dark text-white">
+    © 2025 Person Management System | Built with Angular 20 & .NET 9
+  </div>
+</footer>

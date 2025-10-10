@@ -1,0 +1,26 @@
+.card {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.badge {
+  font-size: 1em;
+  padding: 0.5em 0.8em;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
