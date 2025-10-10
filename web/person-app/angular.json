@@ -74,7 +74,8 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "codeCoverage": true,
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": false,
             "codeCoverageExclude": [
               "**/*.spec.ts"
             ],

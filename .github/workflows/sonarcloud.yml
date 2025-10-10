@@ -54,7 +54,7 @@ jobs:
             /o:"maddinenisri" \
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.opencover.reportsPaths="**/coverage/**/coverage.opencover.xml" \
+            /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" \
             /d:sonar.exclusions="**/Migrations/**,**/appsettings*.json,**/bin/**,**/obj/**,**/*.Designer.cs" \
             /d:sonar.coverage.exclusions="**/Migrations/**,**/Program.cs" \
             /d:sonar.cpd.exclusions="**/Migrations/**"
@@ -67,18 +67,16 @@ jobs:
           dotnet test tests/PersonApi.UnitTests/PersonApi.UnitTests.csproj \
             --no-build \
             --configuration Release \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./coverage/unit \
-            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+            --collect:"XPlat Code Coverage;Format=opencover" \
+            --results-directory ./TestResults/unit
 
       - name: Run Integration Tests with Coverage
         run: |
           dotnet test tests/PersonApi.IntegrationTests/PersonApi.IntegrationTests.csproj \
             --no-build \
             --configuration Release \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./coverage/integration \
-            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+            --collect:"XPlat Code Coverage;Format=opencover" \
+            --results-directory ./TestResults/integration
 
       - name: End SonarScanner
         env:
