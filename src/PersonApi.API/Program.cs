@@ -101,4 +101,7 @@ if (app.Environment.IsDevelopment())
 await app.RunAsync();
 
 // Make the implicit Program class public for testing
-public static partial class Program { }
+// Note: Cannot be static as it's used with WebApplicationFactory<Program> in integration tests
+#pragma warning disable S1118 // Utility classes should not have public constructors
+public partial class Program { }
+#pragma warning restore S1118

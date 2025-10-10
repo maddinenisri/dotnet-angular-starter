@@ -55,9 +55,12 @@ jobs:
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
-            /d:sonar.exclusions="**/Migrations/**,**/appsettings*.json,**/bin/**,**/obj/**,**/*.Designer.cs" \
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,**/*.Designer.cs" \
             /d:sonar.coverage.exclusions="**/Migrations/**,**/Program.cs" \
-            /d:sonar.cpd.exclusions="**/Migrations/**"
+            /d:sonar.cpd.exclusions="**/Migrations/**" \
+            /d:sonar.issue.ignore.multicriteria=e1 \
+            /d:sonar.issue.ignore.e1.ruleKey=csharpsquid:S2068 \
+            /d:sonar.issue.ignore.e1.resourceKey=**/*appsettings*.json
 
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
