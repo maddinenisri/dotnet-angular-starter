@@ -51,7 +51,7 @@ jobs:
         run: |
           dotnet sonarscanner begin \
             /k:"dotnet-angular-starter" \
-            /o:"${{ secrets.SONAR_ORGANIZATION }}" \
+            /o:"maddinenisri" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
@@ -104,9 +104,16 @@ jobs:
         working-directory: web/person-app
         run: npm ci
 
+      - name: Install Chrome for testing
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+
       - name: Run tests with coverage
         working-directory: web/person-app
         run: npm test -- --browsers=ChromeHeadless --watch=false --code-coverage
+        env:
+          CHROME_BIN: /usr/bin/chromium-browser
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@master
@@ -117,7 +124,7 @@ jobs:
           projectBaseDir: web/person-app
           args: >
             -Dsonar.projectKey=dotnet-angular-starter
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.organization=maddinenisri
             -Dsonar.sources=src
             -Dsonar.tests=src
             -Dsonar.test.inclusions=**/*.spec.ts

@@ -418,9 +418,6 @@ dist
 # Testing
 ##########################
 
-# Karma
-/karma.conf.js
-
 # Jasmine
 jasmine-core
 
