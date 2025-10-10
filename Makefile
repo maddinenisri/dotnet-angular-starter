@@ -45,8 +45,8 @@ docker-up:
 	@echo "Running migrations..."
 	export PATH="$$PATH:/Users/srini/.dotnet/tools" && dotnet ef database update --project src/PersonApi.Infrastructure --startup-project src/PersonApi.API
 	@echo "All services started!"
-	@echo "API: http://localhost:5000"
-	@echo "Swagger: http://localhost:5000"
+	@echo "API: http://localhost:5001"
+	@echo "Swagger: http://localhost:5001/swagger"
 	@echo "Angular: http://localhost:4200"
 
 # Stop Docker services
